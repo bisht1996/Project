@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:bean xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans" xmlns="http://www.springframework.org/schema/security">
+
+
+<http auto-config="true">
+
+<intercept-url access="hasRole('ROLE_USER')" pattern="/Cart/**"/>
+
+<intercept-url access="hasRole('ROLE_USER')" pattern="/myCart/**"/>
+
+<!-- <intercept-url pattern="/" access="permitAll" /><intercept-url pattern="/index" access="permitAll" /> -->
+
+
+<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/admin*"/>
+
+<form-login default-target-url="/" authentication-failure-url="/login" login-processing-url="/logg" password-parameter="password" username-parameter="emailid" login-page="/login"/>
+
+<logout logout-success-url="/Login?LogOut" delete-cookies="true" logout-url="/LogOut"/>
+
+<csrf disabled="true"/>
+
+</http>
+
+
+<authentication-manager>
+
+<authentication-provider>
+
+<jdbc-user-service authorities-by-username-query="select username,rolename from authorization where username =? " users-by-username-query="select emailid,password,isactive from Customer where emailid=?" data-source-ref="dataSource"/>
+
+</authentication-provider>
+
+</authentication-manager>
+
+</beans:bean>
